@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #bg-container {
+        background: linear-gradient(skyblue, white);
+        min-height: 100vh;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+      }
+      #search {
+        border: 2px solid blue;
+        height: 30px;
+        width: 500px;
+        border-radius: 15px;
+      }
+      #submit {
+        border: 2px solid red;
+        background-color: chartreuse;
+        font-family: sans-serif;
+        height: 30px;
+        width: 150px;
+        border-radius: 15px;
+      }
+      .details {
+        border: 2px solid red;
+        height: 300px;
+        width: 300px;
+        background-color: lightyellow;
+        border-radius: 15px;
+        color: black;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        font-weight: bolder;
+        box-shadow: 2px 2px 2px 3px black;
+      }
+      #container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="bg-container">
+      <div id="container">
+        <form>
+          <input type="text" placeholder="cityname" id="search" />
+          <input type="submit" id="submit" />
+        </form>
+
+        <div class="details">
+          <h1 id="city"></h1>
+          <h1 id="temp"></h1>
+          <h1 id="wind"></h1>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.forms[0].addEventListener("submit", function (e) {
+        e.preventDefault();
+        var cityname = e.target[0].value;
+        console.log(cityname);
+        var ApiKey = "758489f907e353a146befee240985202";
+        fetch(
+          `https://api.openweathermap.org/data/2.5/weather?q=${cityname}&appid=${ApiKey}`
+        )
+          .then((val) => {
+            return val.json();
+          })
+          .then((val) => {
+            console.log(val);
+            document.getElementById("city").innerHTML =
+              "City Name:-   " + val.name;
+            document.getElementById("temp").innerHTML =
+              "Temperature:- " + Math.round(val.main.temp - 273);
+            document.getElementById("wind").innerHTML =
+              "Wind Speed:-  " + val.wind.speed;
+
+            if (val.main.temp >= 30 && val.main.temp <= 35) {
+              let det = document.getElementsByClassName("details");
+              det[0].style.background =
+                "url('https://thumbs.dreamstime.com/z/angry-sun-18624992.jpg')";
+              det[0].style.backgroundSize = "auto 300px";
+              det[0].style.backgroundRepeat = "no-repeat";
+              det[0].style.backgroundPosition = "center";
+            } else {
+              let det = document.getElementsByClassName("details");
+              det[0].style.background =
+                "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQD5rtq-jp_GGLtqx50HK7bAilmrOB3IaCrDNSdSKIRpr9OVSyKx6n-5kFXOqJwmV3L81c&usqp=CAU')";
+              det[0].style.backgroundSize = "auto 300px";
+              det[0].style.backgroundRepeat = "no-repeat";
+              det[0].style.backgroundPosition = "center";
+            }
+          });
+      });
+    </script>
+  </body>
+</html>
